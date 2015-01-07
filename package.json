@@ -1,0 +1,26 @@
+{
+  "name": "minimongo-schema",
+  "version": "0.0.1",
+  "description": "minimongo helper",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "minimongo-schema-gen": "bin/minimongo-schema-gen"
+  },
+  "author": "mizchi",
+  "license": "MIT",
+  "devDependencies": {
+    "coffee-loader": "^0.7.2",
+    "coffee-script": "^1.8.0",
+    "webpack": "^1.4.15"
+  },
+  "dependencies": {
+    "minimongo": "^3.2.5",
+    "bluebird": "^2.6.1",
+    "change-case": "^2.1.6",
+    "js-yaml": "^3.2.5",
+    "optimist": "^0.6.1"
+  }
+}

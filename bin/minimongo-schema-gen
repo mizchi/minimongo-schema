@@ -1,0 +1,71 @@
+#!/usr/bin/env coffee
+fs = require 'fs'
+path = require 'path'
+yaml = require 'js-yaml'
+argv = require('optimist')
+  .alias 'm', 'module'
+  .alias 'o', 'out'
+  .argv
+
+cwd = process.cwd()
+fpath = path.join cwd, argv._[0]
+ext = path.extname fpath
+
+schema =
+  switch ext
+    when '.json', '.coffee', '.js'
+      require fpath
+    when '.yml', '.yaml'
+      data = fs.readFileSync(fpath).toString()
+      yaml.safeLoad(data)
+
+indent = (head, str) ->
+  str
+    .split('\n')
+    .map (l) -> head+l
+    .join('\n')
+
+
+printParams = (head='', params) ->
+  props = []
+  for k, v of params
+    if typeof v is 'string'
+      props.push head+"#{k}: #{v};"
+    else
+      p = indent head+'  ', (printParams '', v)
+
+      props.push """
+      #{head}#{k}: {
+      #{p}
+      #{head}}
+      """
+  indent head, props.join('\n')
+
+printTypeScript = (col) ->
+  p = printParams '', col.params
+
+  """
+
+  export interface #{col.name} {
+  #{indent '  ', p}
+  }
+  """
+
+body = ''
+for db in schema.databases
+  for col in db.collections
+    body += printTypeScript col
+
+if argv.module
+  output = """
+  declare module #{argv.module} {
+  #{indent "  ", body}
+  }
+  """
+else
+  output = body
+
+if argv.out
+  fs.writeFileSync path.join(cwd, argv.out), output
+else
+  console.log output
