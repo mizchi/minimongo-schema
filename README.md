@@ -29,28 +29,25 @@ module.exports =
           name: 'A'
           params:
             _id: 'string'
-          }
-        ]
-      }
-      {
-        namespace: 'memory'
-        type: 'memoryDb'
-        collections: [
-          {
-            name: 'M'
-            params: {
-              _id: 'string'
-              nested: {
-                a: 'string'
-                b: {
-                  c: 'boolean'
-                }
-              }
-            }
-          }
-        ]
-      }
-    ]
+        }
+      ]
+    }
+    {
+      namespace: 'memory'
+      type: 'memoryDb'
+      collections: [
+        {
+          name: 'M'
+          params:
+            _id: 'string'
+            nested:
+              a: 'string'
+              b:
+                c: 'boolean'
+        }
+      ]
+    }
+  ]
 ```
 
 Load dbs by this schema
